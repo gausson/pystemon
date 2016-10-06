@@ -125,6 +125,7 @@ site:
     archive-url: 'http://www.quickleak.se/last-pastes.html'
     archive-regex: '<td><a href="([A-Za-z0-9]+)">'
     download-url: 'http://www.quickleak.se/{id}'
+    pastie-classname: 'PastieQuickLeakSe'
     
   codepad.org:
     archive-url: 'http://codepad.org/recent'

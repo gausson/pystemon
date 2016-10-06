@@ -447,6 +447,33 @@ class PastieSniptNet(Pastie):
         return self.pastie_content
 
 
+class PastieQuickLeakSe(Pastie):
+    '''
+    Custom Pastie class for the quickleak.se site
+    This class overloads the fetch_pastie function to do the form submit
+    to get the raw pastie
+    '''
+    def __init__(self, site, pastie_id):
+        Pastie.__init__(self, site, pastie_id)
+
+    def fetch_pastie(self):
+        downloaded_page, headers = download_url(self.url)
+        if downloaded_page:
+            htmlDom = BeautifulSoup(downloaded_page)
+            # search for <div class="content">
+            content_div = htmlDom.find('div', {'class': 'content'})
+            if content_div:
+                pre_block = content_div.find('pre')
+
+                if pre_block and pre_block.contents:
+                    # replace html entities like &gt;
+                    decoded = BeautifulSoup(
+                        pre_block.contents[0],
+                        convertEntities=BeautifulSoup.HTML_ENTITIES)
+                    self.pastie_content = decoded.contents[0]
+        return self.pastie_content
+
+
 class ThreadPasties(threading.Thread):
     '''
     Instances of these threads are responsible for downloading the pastes
